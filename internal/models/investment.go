@@ -2,8 +2,6 @@ package models
 
 import (
 	"time"
-
-	"gorm.io/gorm"
 )
 
 type InvestmentType string
@@ -25,7 +23,7 @@ func (t InvestmentType) IsValid() bool {
 }
 
 type Investment struct {
-	gorm.Model
+	ID           uint           `json:"id"`
 	Name         string         `json:"name" gorm:"not null"`
 	Ticker       string         `json:"ticker"`
 	Type         InvestmentType `json:"type" gorm:"not null"`
@@ -33,4 +31,6 @@ type Investment struct {
 	BuyPrice     float64        `json:"buy_price" gorm:"not null"`
 	CurrentPrice float64        `json:"current_price"`
 	BuyDate      time.Time      `json:"buy_date" gorm:"not null"`
+	CreatedAt    time.Time      `json:"created_at"`
+	UpdatedAt    time.Time      `json:"updated_at"`
 }

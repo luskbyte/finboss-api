@@ -2,8 +2,6 @@ package models
 
 import (
 	"time"
-
-	"gorm.io/gorm"
 )
 
 type IncomeCategory string
@@ -24,10 +22,12 @@ func (c IncomeCategory) IsValid() bool {
 }
 
 type Income struct {
-	gorm.Model
-	Description string         `json:"description" gorm:"not null"`
-	Amount      float64        `json:"amount" gorm:"not null"`
-	Category    IncomeCategory `json:"category" gorm:"not null"`
-	Date        time.Time      `json: "date" gorm:"not null"`
-	Recurring   bool           `json:"recurring" gorm:"default:false"`
+	ID          uint           `json:"id"`
+	Description string         `json:"description"`
+	Amount      float64        `json:"amount"`
+	Category    IncomeCategory `json:"category"`
+	Date        time.Time      `json: "date"`
+	Recurring   bool           `json:"recurring"`
+	CreatedAt   time.Time      `json:"created_at"`
+	UpdatedAt   time.Time      `json:"updated_at"`
 }

@@ -1,17 +1,14 @@
 package database
 
 import (
+	"database/sql"
 	"fmt"
 	"log"
 	"os"
 	"time"
-
-	"gorm.io/driver/postgres"
-	"gorm.io/gorm"
-	"gorm.io/gorm/logger"
 )
 
-func Connect() *gorm.DB {
+func Connect() *sql.DB {
 	password := os.Getenv("DB_PASSWORD")
 	if password == "" {
 		log.Fatal("DB_PASSWORD environment variable is required")
@@ -27,20 +24,18 @@ func Connect() *gorm.DB {
 		getEnv("DB_SSLMODE", "require"),
 	)
 
-	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{
-		Logger: logger.Default.LogMode(logger.Warn),
-	})
+	db, err := sql.Open("pgx", dsn)
 	if err != nil {
-		log.Fatalf("failed to connect to database: %v", err)
+		log.Fatalf("failed to open database: %v", err)
 	}
 
-	sqlDB, err := db.DB()
-	if err != nil {
-		log.Fatalf("failed to get sql.DB: %v", err)
+	db.SetMaxOpenConns(25)
+	db.SetMaxIdleConns(5)
+	db.SetConnMaxLifetime(5 * time.Minute)
+
+	if err := db.Ping(); err != nil {
+		log.Fatalf("failed to connect to database: %v", err)
 	}
-	sqlDB.SetMaxOpenConns(25)
-	sqlDB.SetMaxIdleConns(5)
-	sqlDB.SetConnMaxLifetime(5 * time.Minute)
 
 	log.Println("database connected")
 	return db
