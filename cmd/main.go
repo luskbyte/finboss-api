@@ -31,7 +31,7 @@ func main() {
 
 	mux := http.NewServeMux()
 
-	mux.HandleFunc("GET /api/dashboard", dashboardHandler.Summary)
+	mux.HandleFunc("GET /api/v1/dashboard", dashboardHandler.Summary)
 
 	mux.HandleFunc("GET /api/v1/incomes", incomeHandler.List)
 	mux.HandleFunc("GET /api/v1/incomes/{id}", incomeHandler.Get)

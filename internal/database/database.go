@@ -6,6 +6,8 @@ import (
 	"log"
 	"os"
 	"time"
+
+	_ "github.com/jackc/pgx/v4/stdlib"
 )
 
 func Connect() *sql.DB {
@@ -15,7 +17,7 @@ func Connect() *sql.DB {
 	}
 
 	dsn := fmt.Sprintf(
-		"host=%s user=%s password=%s dbname=%s port=%s sslmode=%s TimeZone=America/San_Paulo",
+		"host=%s user=%s password=%s dbname=%s port=%s sslmode=%s TimeZone=America/Sao_Paulo",
 		getEnv("DB_HOST", "localhost"),
 		getEnv("DB_USER", "finboss"),
 		password,
